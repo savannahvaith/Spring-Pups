@@ -34,6 +34,15 @@ public class Puppy {
 //		this.owner = owner; 
 		this.skill = skill; 
 	}
+	
+	public Puppy(Long id, String name, int age, String breed, boolean skill) {
+		this.id = id; 
+		this.name = name; 
+		this.age = age; 
+		this.breed = breed; 
+//		this.owner = owner; 
+		this.skill = skill; 
+	}
 
 	// Getters and setters
 	
@@ -84,6 +93,14 @@ public class Puppy {
 
 	public void setSkill(boolean skill) {
 		this.skill = skill;
+	}
+
+	public Owner getOwner() {
+		return owner;
+	}
+
+	public void setOwner(Owner owner) {
+		this.owner = owner;
 	}
 	
 	
