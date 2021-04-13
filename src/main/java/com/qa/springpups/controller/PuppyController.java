@@ -14,11 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.qa.springpups.domain.Puppy;
+import com.qa.springpups.dto.PuppyDTO;
 import com.qa.springpups.service.PuppyService;
 
 @RestController
 @RequestMapping("/puppy")
-public class PuppyController {
+public class PuppyController{
 
 	private PuppyService service; 
 	
@@ -27,28 +28,29 @@ public class PuppyController {
 	}
 	
 	@PostMapping("/create")
-	public ResponseEntity<Puppy> create(@RequestBody Puppy pup){
-		return new ResponseEntity<Puppy>(this.service.createPuppy(pup), HttpStatus.CREATED);
+	public ResponseEntity<PuppyDTO> create(@RequestBody Puppy pup){
+		return new ResponseEntity<PuppyDTO>(this.service.createPuppy(pup), HttpStatus.CREATED);
 	}
 	
 	@GetMapping("/getAll")
-	public ResponseEntity<List<Puppy>> getAll(){
+	public ResponseEntity<List<PuppyDTO>> getAll(){
 		return ResponseEntity.ok(this.service.readPuppies());
 	}
 	
 	@GetMapping("/getOne/{id}")
-	public ResponseEntity<Puppy> getOne(@PathVariable long id){
+	public ResponseEntity<PuppyDTO> getOne(@PathVariable long id){
 		return ResponseEntity.ok(this.service.getPuppyById(id));
 	}
 	
 	@PutMapping("/update/{id}")
-	public ResponseEntity<Puppy> updatePuppy(@PathVariable long id, @RequestBody Puppy newpup){
-		return ResponseEntity.ok(this.service.updatePuppy(id, newpup));
+	public ResponseEntity<PuppyDTO> updatePuppyDTO(@PathVariable long id, @RequestBody PuppyDTO newpup){
+		return new ResponseEntity<>(this.service.updatePuppy(id, newpup), HttpStatus.ACCEPTED);
 	}
 	
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Boolean> deletePuppy(@PathVariable long id){
-		return ResponseEntity.ok(this.service.deletePuppy(id));
+	public ResponseEntity<Boolean> deletePuppyDTO(@PathVariable long id){
+		return this.service.deletePuppy(id) ? new ResponseEntity<>(HttpStatus.NO_CONTENT) 
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 }
