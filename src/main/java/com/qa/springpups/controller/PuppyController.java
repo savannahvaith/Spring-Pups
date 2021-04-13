@@ -17,6 +17,7 @@ import com.qa.springpups.domain.Puppy;
 import com.qa.springpups.dto.PuppyDTO;
 import com.qa.springpups.service.PuppyService;
 
+
 @RestController
 @RequestMapping("/puppy")
 public class PuppyController{
@@ -29,27 +30,27 @@ public class PuppyController{
 	
 	@PostMapping("/create")
 	public ResponseEntity<PuppyDTO> create(@RequestBody Puppy pup){
-		return new ResponseEntity<PuppyDTO>(this.service.createPuppy(pup), HttpStatus.CREATED);
+		return new ResponseEntity<PuppyDTO>(this.service.create(pup), HttpStatus.CREATED);
 	}
 	
 	@GetMapping("/getAll")
 	public ResponseEntity<List<PuppyDTO>> getAll(){
-		return ResponseEntity.ok(this.service.readPuppies());
+		return ResponseEntity.ok(this.service.read());
 	}
 	
 	@GetMapping("/getOne/{id}")
 	public ResponseEntity<PuppyDTO> getOne(@PathVariable long id){
-		return ResponseEntity.ok(this.service.getPuppyById(id));
+		return ResponseEntity.ok(this.service.getById(id));
 	}
 	
 	@PutMapping("/update/{id}")
 	public ResponseEntity<PuppyDTO> updatePuppyDTO(@PathVariable long id, @RequestBody PuppyDTO newpup){
-		return new ResponseEntity<>(this.service.updatePuppy(id, newpup), HttpStatus.ACCEPTED);
+		return new ResponseEntity<>(this.service.update(id, newpup), HttpStatus.ACCEPTED);
 	}
 	
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<Boolean> deletePuppyDTO(@PathVariable long id){
-		return this.service.deletePuppy(id) ? new ResponseEntity<>(HttpStatus.NO_CONTENT) 
+		return this.service.delete(id) ? new ResponseEntity<>(HttpStatus.NO_CONTENT) 
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
