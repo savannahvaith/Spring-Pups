@@ -45,7 +45,7 @@ public class PuppyServiceDB implements PuppyService {
 	}
 
 	@Override
-	public PuppyDTO updatePuppy(Long id, Puppy newPuppy) {
+	public PuppyDTO updatePuppy(Long id, PuppyDTO newPuppy) {
 		Puppy existing = this.repo.findById(id).orElseThrow();
 		
 		existing.setAge(newPuppy.getAge());

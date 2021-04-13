@@ -13,7 +13,7 @@ public interface PuppyService {
 	
 	PuppyDTO getPuppyById(Long id);
 	
-	PuppyDTO updatePuppy(Long id, Puppy newPuppy);
+	PuppyDTO updatePuppy(Long id, PuppyDTO newPuppy);
 	
 	boolean deletePuppy(Long id);
 	
