@@ -14,7 +14,6 @@ public class Puppy {
 	private String name; 
 	private int age; 
 	private String breed; 
-	private String owner; 
 	private boolean skill; 
 	
 	// default constructor
@@ -23,11 +22,10 @@ public class Puppy {
 	}
 
 	// constructor with params
-	public Puppy(String name, int age, String breed, String owner, boolean skill) {
+	public Puppy(String name, int age, String breed, boolean skill) {
 		this.name = name; 
 		this.age = age; 
 		this.breed = breed; 
-		this.owner = owner; 
 		this.skill = skill; 
 	}
 
@@ -64,14 +62,6 @@ public class Puppy {
 
 	public void setBreed(String breed) {
 		this.breed = breed;
-	}
-
-	public String getOwner() {
-		return owner;
-	}
-
-	public void setOwner(String owner) {
-		this.owner = owner;
 	}
 
 	public boolean isSkill() {
