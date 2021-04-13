@@ -3,16 +3,19 @@ package com.qa.springpups.service;
 import java.util.List;
 
 import com.qa.springpups.domain.Puppy;
+import com.qa.springpups.dto.PuppyDTO;
 
 public interface PuppyService {
 	
-	Puppy createPuppy(Puppy p);
+	PuppyDTO createPuppy(Puppy p);
 	
-	List<Puppy> readPuppies();
+	List<PuppyDTO> readPuppies();
 	
-	Puppy getPuppyById(Long id);
+	PuppyDTO getPuppyById(Long id);
 	
-	Puppy updatePuppy(Long id, Puppy newPuppy);
+	PuppyDTO updatePuppy(Long id, Puppy newPuppy);
 	
 	boolean deletePuppy(Long id);
+	
+	PuppyDTO mapToDTO(Puppy pup);
 }
