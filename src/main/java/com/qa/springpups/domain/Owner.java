@@ -12,13 +12,17 @@ import javax.persistence.OneToMany;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import com.sun.istack.NotNull;
+
 @Entity
 public class Owner {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@NotNull
 	private String name;
+	@NotNull
 	private int age;
 
 	@OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
@@ -27,6 +31,7 @@ public class Owner {
 
 	public Owner() {
 	}
+	
 
 	public Owner(String name, int age) {
 		super();
