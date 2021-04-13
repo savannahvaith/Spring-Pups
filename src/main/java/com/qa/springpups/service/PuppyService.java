@@ -52,7 +52,7 @@ public class PuppyService{
 		existing.setAge(newPuppy.getAge());
 		existing.setBreed(newPuppy.getBreed());
 		existing.setName(newPuppy.getName());
-		existing.setOwner(newPuppy.getOwner());
+//		existing.setOwner(newPuppy.getOwner());
 		
 		return this.mapToDTO(this.repo.save(existing));
 	}
