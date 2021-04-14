@@ -11,8 +11,10 @@ public class PuppyDTO {
 	private boolean skill; 
 	
 	// default constructor
-	public PuppyDTO() {}
-
+	public PuppyDTO() { 
+		
+	}
+	
 	// Getters and setters
 	public Long getId() {
 		return id;

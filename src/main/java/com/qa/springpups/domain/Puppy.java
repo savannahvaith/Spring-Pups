@@ -14,8 +14,7 @@ public class Puppy {
 	private Long id; 
 	private String name; 
 	private int age; 
-	private String breed; 
-//	private String owner; 
+	private String breed;
 	private boolean skill; 
 	
 	@ManyToOne
@@ -31,7 +30,6 @@ public class Puppy {
 		this.name = name; 
 		this.age = age; 
 		this.breed = breed; 
-//		this.owner = owner; 
 		this.skill = skill; 
 	}
 	
@@ -40,7 +38,6 @@ public class Puppy {
 		this.name = name; 
 		this.age = age; 
 		this.breed = breed; 
-//		this.owner = owner; 
 		this.skill = skill; 
 	}
 
@@ -78,15 +75,7 @@ public class Puppy {
 	public void setBreed(String breed) {
 		this.breed = breed;
 	}
-
-//	public String getOwner() {
-//		return owner;
-//	}
-//
-//	public void setOwner(String owner) {
-//		this.owner = owner;
-//	}
-
+  
 	public boolean isSkill() {
 		return skill;
 	}
