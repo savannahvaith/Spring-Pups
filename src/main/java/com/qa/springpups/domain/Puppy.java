@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Puppy {
@@ -13,9 +14,11 @@ public class Puppy {
 	private Long id; 
 	private String name; 
 	private int age; 
-	private String breed; 
-	private String owner; 
+	private String breed;
 	private boolean skill; 
+	
+	@ManyToOne
+	private Owner owner = null; 
 	
 	// default constructor
 	public Puppy() { 
@@ -23,11 +26,18 @@ public class Puppy {
 	}
 
 	// constructor with params
-	public Puppy(String name, int age, String breed, String owner, boolean skill) {
+	public Puppy(String name, int age, String breed, boolean skill) {
 		this.name = name; 
 		this.age = age; 
 		this.breed = breed; 
-		this.owner = owner; 
+		this.skill = skill; 
+	}
+	
+	public Puppy(Long id, String name, int age, String breed, boolean skill) {
+		this.id = id; 
+		this.name = name; 
+		this.age = age; 
+		this.breed = breed; 
 		this.skill = skill; 
 	}
 
@@ -65,21 +75,21 @@ public class Puppy {
 	public void setBreed(String breed) {
 		this.breed = breed;
 	}
-
-	public String getOwner() {
-		return owner;
-	}
-
-	public void setOwner(String owner) {
-		this.owner = owner;
-	}
-
+  
 	public boolean isSkill() {
 		return skill;
 	}
 
 	public void setSkill(boolean skill) {
 		this.skill = skill;
+	}
+
+	public Owner getOwner() {
+		return owner;
+	}
+
+	public void setOwner(Owner owner) {
+		this.owner = owner;
 	}
 	
 	
