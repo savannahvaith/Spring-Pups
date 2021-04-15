@@ -13,17 +13,6 @@ public class PuppyDTO {
 		
 	}
 	
-	public PuppyDTO(Long id, String name, int age, String breed, boolean skill) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.age = age;
-		this.breed = breed;
-		this.skill = skill;
-	}
-
-
-
 	// Getters and setters
 	public Long getId() {
 		return id;
