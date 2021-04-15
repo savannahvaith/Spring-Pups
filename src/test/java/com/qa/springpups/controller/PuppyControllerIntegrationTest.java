@@ -1,6 +1,5 @@
 package com.qa.springpups.controller;
 
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -19,9 +18,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.RequestBuilder;
-import org.springframework.test.web.servlet.ResultMatcher;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,102 +30,79 @@ import com.qa.springpups.repo.PuppyRepo;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
+@Sql(scripts = { "classpath:pup-schema.sql",
+		"classpath:pup-data.sql" }, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
 public class PuppyControllerIntegrationTest {
 
 	@Autowired
 	private MockMvc mockMvc;
-	
+
 	@Autowired
-	private ObjectMapper mapper; 
-	
+	private ObjectMapper mapper;
+
 	@Autowired
 	private ModelMapper modelMapper;
-	
-	@Autowired
-	private PuppyRepo repo; 
-	
+
+	private PuppyDTO mapToDTO(Puppy puppy) {
+		return this.modelMapper.map(puppy, PuppyDTO.class);
+	}
+
 	private final String URI = "/puppy";
-	
-	private PuppyDTO mapToDTO(Puppy p ) {
-		return this.modelMapper.map(p,PuppyDTO.class);
-	}
-	
-	private Long id; 
-	private Puppy testPuppy; 
-	private Puppy testPuppyWithId; 
-	private PuppyDTO puppyDTO; 
-	
-	@BeforeEach
-	void init() {
-		this.repo.deleteAll();
-		this.testPuppy = new Puppy("Milo", 2, "Lahsa Apso", false);
-		this.testPuppyWithId = this.repo.saveAndFlush(this.testPuppy);
-		this.id = this.testPuppyWithId.getId();
-		this.puppyDTO = mapToDTO(testPuppyWithId);
-	}
-	
+
+	final Puppy PUP_FROM_DB = new Puppy(1L, "Milo", 2, "Lahsa Apso", false);
+	final Long id = PUP_FROM_DB.getId();
+
+//	@BeforeEach
+//	void init() {
+//		this.repo.deleteAll();
+//		this.testPuppy = new Puppy("Milo", 2, "Lahsa Apso", false);
+//		this.testPuppyWithId = this.repo.saveAndFlush(this.testPuppy);
+//		this.id = this.testPuppyWithId.getId();
+//		this.puppyDTO = mapToDTO(testPuppyWithId);
+//	}
+
 	@Test
 	void createTest() throws Exception {
-		
+		final Puppy NEW_PUPPY = new Puppy("Tyson", 3, "German Shepard", false);
+		final Puppy SAVED_PUPPY = new Puppy(2L, "Tyson", 3, "German Shepard", false);
 
-//		// convert from object to string 
-//		String puppyAsString = this.mapper.writeValueAsString(this.testPuppy);
-//		
-//		// make the request
-//		RequestBuilder mockRequest = post(URI + "/create")
-//				.contentType(MediaType.APPLICATION_JSON)
-//				.content(puppyAsString);
-//
-//		// Response stuff 
-//		// need to convert to DTO for relationship tings
-//		String savedPuppyAsString = this.mapper.writeValueAsString(this.puppyDTO);
-//		
-//		ResultMatcher resultStatus = status().isCreated(); 
-//		ResultMatcher resultBody = content().json(savedPuppyAsString);
-//	
-//		this.mockMvc.perform(mockRequest).andExpect(resultStatus).andExpect(resultBody);
-		
-		this.mockMvc.perform(post(URI+"/create")
-						.contentType(MediaType.APPLICATION_JSON)
-						.content(this.mapper.writeValueAsString(this.testPuppy)))
-					.andExpect(status().isCreated())
-					.andExpect(content().json(this.mapper.writeValueAsString(this.puppyDTO)));
+		this.mockMvc
+				.perform(post(URI + "/create").contentType(MediaType.APPLICATION_JSON)
+						.content(this.mapper.writeValueAsString(NEW_PUPPY)))
+				.andExpect(status().isCreated())
+				.andExpect(content().json(this.mapper.writeValueAsString(this.mapToDTO(SAVED_PUPPY))));
 	}
-	
+
 	@Test
 	void readOneTest() throws JsonProcessingException, Exception {
-		this.mockMvc.perform(get(URI+"/getOne/"+this.id)
-					.contentType(MediaType.APPLICATION_JSON))
-					.andExpect(status().isOk())
-					.andExpect(content().json(this.mapper.writeValueAsString(this.puppyDTO)));
+		this.mockMvc.perform(get(URI + "/getOne/" + this.id).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(content().json(this.mapper.writeValueAsString(this.mapToDTO(PUP_FROM_DB))));
 	}
-	
+
 	@Test
 	void readAllTest() throws JsonProcessingException, Exception {
 		final List<PuppyDTO> PUPPIES = new ArrayList<>();
-		PUPPIES.add(this.puppyDTO);
-		
-		this.mockMvc.perform(get(URI+"/getAll")
-							.contentType(MediaType.APPLICATION_JSON))
-					.andExpect(status().isOk())
-					.andExpect(content().json(this.mapper.writeValueAsString(PUPPIES)));
+		PUPPIES.add(this.mapToDTO(PUP_FROM_DB));
+
+		this.mockMvc.perform(get(URI + "/getAll").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+				.andExpect(content().json(this.mapper.writeValueAsString(PUPPIES)));
 	}
-	
+
 	@Test
 	void updateTest() throws JsonProcessingException, Exception {
 		final Puppy NEW_PUPPY = new Puppy(this.id, "Tyson", 2, "German Shepard", false);
-		this.puppyDTO = mapToDTO(NEW_PUPPY); 
-		this.mockMvc.perform(put(URI + "/update/" + this.id)
-						.contentType(MediaType.APPLICATION_JSON)
-						.content(this.mapper.writeValueAsString(puppyDTO)))
+
+		this.mockMvc
+				.perform(put(URI + "/update/" + this.id).contentType(MediaType.APPLICATION_JSON)
+						.content(this.mapper.writeValueAsString(this.mapToDTO(NEW_PUPPY))))
 				.andExpect(status().isAccepted())
-				.andExpect(content().json(this.mapper.writeValueAsString(puppyDTO)));
+				.andExpect(content().json(this.mapper.writeValueAsString(this.mapToDTO(NEW_PUPPY))));
 	}
-	
+
 	@Test
 	void deleteTest() throws Exception {
-		this.mockMvc.perform(delete(URI + "/delete/" + this.id))
-				.andExpect(status().isNoContent());
+		this.mockMvc.perform(delete(URI + "/delete/" + this.id)).andExpect(status().isNoContent());
 	}
-	
+
 }
