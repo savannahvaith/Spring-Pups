@@ -30,8 +30,9 @@ import com.qa.springpups.repo.PuppyRepo;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-@Sql(scripts = { "classpath:pup-schema.sql",
-		"classpath:pup-data.sql" }, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(
+		scripts = { "classpath:pup-schema.sql","classpath:pup-data.sql" }, 
+		executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
 public class PuppyControllerIntegrationTest {
 
 	@Autowired
@@ -75,7 +76,9 @@ public class PuppyControllerIntegrationTest {
 
 	@Test
 	void readOneTest() throws JsonProcessingException, Exception {
-		this.mockMvc.perform(get(URI + "/getOne/" + this.id).contentType(MediaType.APPLICATION_JSON))
+		this.mockMvc
+				.perform(get(URI + "/getOne/" + this.id)
+						.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(content().json(this.mapper.writeValueAsString(this.mapToDTO(PUP_FROM_DB))));
 	}
@@ -85,7 +88,10 @@ public class PuppyControllerIntegrationTest {
 		final List<PuppyDTO> PUPPIES = new ArrayList<>();
 		PUPPIES.add(this.mapToDTO(PUP_FROM_DB));
 
-		this.mockMvc.perform(get(URI + "/getAll").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+		this.mockMvc
+				.perform(get(URI + "/getAll")
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
 				.andExpect(content().json(this.mapper.writeValueAsString(PUPPIES)));
 	}
 
@@ -94,7 +100,8 @@ public class PuppyControllerIntegrationTest {
 		final Puppy NEW_PUPPY = new Puppy(this.id, "Tyson", 2, "German Shepard", false);
 
 		this.mockMvc
-				.perform(put(URI + "/update/" + this.id).contentType(MediaType.APPLICATION_JSON)
+				.perform(put(URI + "/update/" + this.id)
+						.contentType(MediaType.APPLICATION_JSON)
 						.content(this.mapper.writeValueAsString(this.mapToDTO(NEW_PUPPY))))
 				.andExpect(status().isAccepted())
 				.andExpect(content().json(this.mapper.writeValueAsString(this.mapToDTO(NEW_PUPPY))));
@@ -102,7 +109,9 @@ public class PuppyControllerIntegrationTest {
 
 	@Test
 	void deleteTest() throws Exception {
-		this.mockMvc.perform(delete(URI + "/delete/" + this.id)).andExpect(status().isNoContent());
+		this.mockMvc
+				.perform(delete(URI + "/delete/" + this.id))
+				.andExpect(status().isNoContent());
 	}
 
 }
