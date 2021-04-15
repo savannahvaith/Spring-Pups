@@ -114,12 +114,13 @@ public class PuppyControllerIntegrationTest {
 	
 	@Test
 	void updateTest() throws JsonProcessingException, Exception {
-		final PuppyDTO NEW_PUPPY = new PuppyDTO(this.id, "Tyson", 2, "German Shepard", false);
+		final Puppy NEW_PUPPY = new Puppy(this.id, "Tyson", 2, "German Shepard", false);
+		this.puppyDTO = mapToDTO(NEW_PUPPY); 
 		this.mockMvc.perform(put(URI + "/update/" + this.id)
 						.contentType(MediaType.APPLICATION_JSON)
-						.content(this.mapper.writeValueAsString(NEW_PUPPY)))
+						.content(this.mapper.writeValueAsString(puppyDTO)))
 				.andExpect(status().isAccepted())
-				.andExpect(content().json(this.mapper.writeValueAsString(NEW_PUPPY)));
+				.andExpect(content().json(this.mapper.writeValueAsString(puppyDTO)));
 	}
 	
 	@Test
