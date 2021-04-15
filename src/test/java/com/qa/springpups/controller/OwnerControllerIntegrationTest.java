@@ -77,6 +77,7 @@ public class OwnerControllerIntegrationTest {
 	void readAllTest() throws JsonProcessingException, Exception {
 		final List<OwnerDTO> OWNERS = new ArrayList<>();
 		OWNERS.add(this.mapToDTO(OWNER_FROM_DB));
+		OWNERS.add(this.mapToDTO(new Owner("Bark Whalberg", 24)));
 		
 		this.mock.perform(get(URI+"/readAll")
 					.contentType(MediaType.APPLICATION_JSON))
