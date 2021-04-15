@@ -46,13 +46,12 @@ public class PuppyService{
 		return this.mapToDTO(optPup.orElse(null));
 	}
 
-	public PuppyDTO update(Long id, Puppy newPuppy) {
+	public PuppyDTO update(Long id, PuppyDTO newPuppy) {
 		Puppy existing = this.repo.findById(id).orElseThrow();
 		
 		existing.setAge(newPuppy.getAge());
 		existing.setBreed(newPuppy.getBreed());
 		existing.setName(newPuppy.getName());
-		existing.setOwner(newPuppy.getOwner());
 		
 		return this.mapToDTO(this.repo.save(existing));
 	}

@@ -44,7 +44,7 @@ public class PuppyController{
 	}
 	
 	@PutMapping("/update/{id}")
-	public ResponseEntity<PuppyDTO> updatePuppyDTO(@PathVariable long id, @RequestBody Puppy newpup){
+	public ResponseEntity<PuppyDTO> updatePuppyDTO(@PathVariable long id, @RequestBody PuppyDTO newpup){
 		return new ResponseEntity<>(this.service.update(id, newpup), HttpStatus.ACCEPTED);
 	}
 	
