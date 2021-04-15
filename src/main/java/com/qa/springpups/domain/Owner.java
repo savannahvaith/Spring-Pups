@@ -1,5 +1,6 @@
 package com.qa.springpups.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -27,7 +28,7 @@ public class Owner {
 
 	@OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	private List<Puppy> puppies;
+	private List<Puppy> puppies = new ArrayList<>();
 
 	public Owner() {
 	}
