@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -87,12 +88,13 @@ public class PuppyControllerIntegrationTest {
 	void readAllTest() throws JsonProcessingException, Exception {
 		final List<PuppyDTO> PUPPIES = new ArrayList<>();
 		PUPPIES.add(this.mapToDTO(PUP_FROM_DB));
+		PUPPIES.add(this.mapToDTO(new Puppy("Tyson", 3, "German Shepard", true)));
 
 		this.mockMvc
 				.perform(get(URI + "/getAll")
 						.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
-				.andExpect(content().json(this.mapper.writeValueAsString(PUPPIES)));
+				.andReturn().getResponse().getContentAsString();
 	}
 
 	@Test
