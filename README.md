@@ -3,4 +3,4 @@
 Topics covered: 
 
 * Relationships
-* Testing
+* Testing (Integration)
